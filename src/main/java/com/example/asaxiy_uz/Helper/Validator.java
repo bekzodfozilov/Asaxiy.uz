@@ -1,5 +1,6 @@
 package com.example.asaxiy_uz.Helper;
 
+import com.example.asaxiy_uz.Dao.UserDto;
 import com.example.asaxiy_uz.Dto.*;
 import com.example.asaxiy_uz.Helper.Constants.AppResponseCode;
 import com.example.asaxiy_uz.Helper.Constants.AppResponseMassage;
@@ -87,6 +88,17 @@ public class Validator {
             errors.add(new ValidatorDto("bolim_id",AppResponseMassage.EMPTY_FIELD));
         }else if(carDto.getBolim_id() < 1){
             errors.add(new ValidatorDto("bolim_id",AppResponseMassage.MINUS_VALUE));
+        }
+        return errors;
+    }
+
+    public static List<ValidatorDto> addUser(UserDto userDto) {
+        List<ValidatorDto> errors = new ArrayList<>();
+        if(userDto.getUsername() == null || userDto.getUsername().trim().length() < 1){
+            errors.add(new ValidatorDto("username",AppResponseMassage.EMPTY_FIELD));
+        }
+        if(userDto.getPassword() == null || userDto.getPassword().trim().length() < 1){
+            errors.add(new ValidatorDto("password",AppResponseMassage.EMPTY_FIELD));
         }
         return errors;
     }

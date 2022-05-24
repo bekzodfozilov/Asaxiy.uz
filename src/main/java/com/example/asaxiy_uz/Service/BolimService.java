@@ -31,62 +31,62 @@ public class BolimService {
 
 
     public ResponseDto<Page<BolimDto>> getAllBolim(Integer page, Integer size) {
-        PageRequest pageRequest = PageRequest.of(page,size);
+        PageRequest pageRequest = PageRequest.of(page, size);
         Page<Bolim> list = bolimRepository.findAll(pageRequest);
         List<BolimDto> bolimDto = list.
                 stream()
                 .map(BolimMApping::ToDto)
                 .collect(Collectors.toList());
-        Page<BolimDto> pages = new PageImpl<>(bolimDto,list.getPageable(),list.getTotalElements());
-        if(bolimDto.size() > 0){
-            return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK,pages);
-        }else
+        Page<BolimDto> pages = new PageImpl<>(bolimDto, list.getPageable(), list.getTotalElements());
+        if (bolimDto.size() > 0) {
+            return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, pages);
+        } else
             return new ResponseDto<>(
-                    false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR
+                    false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR
             );
     }
 
     public ResponseDto<?> getColumn(Integer page, Integer size, String column) {
-        Optional<?> parametor = custemBolimRepository.getAllColumn(page,size,column);
-        if(parametor.isPresent()){
-            return new ResponseDto<>(true,AppResponseCode.OK,AppResponseMassage.OK,parametor.get());
+        Optional<?> parametor = custemBolimRepository.getAllColumn(page, size, column);
+        if (parametor.isPresent()) {
+            return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, parametor.get());
         }
-        return new ResponseDto<>(false,null,null);
+        return new ResponseDto<>(false, null, null);
     }
 
     public ResponseDto<BolimDto> addBolim(BolimDto bolimDto) {
         List<ValidatorDto> errors = Validator.addBolim(bolimDto);
         Bolim bolim = null;
-        if(errors.size() >= 1){
-            return new ResponseDto<>(false,AppResponseCode.VALIDATION_ERROS,AppResponseMassage.VALIDATION_ERROR,bolimDto,errors);
+        if (errors.size() >= 1) {
+            return new ResponseDto<>(false, AppResponseCode.VALIDATION_ERROS, AppResponseMassage.VALIDATION_ERROR, bolimDto, errors);
         }
         try {
             bolimDto.setId(null);
-           bolim = BolimMApping.ToEntity(bolimDto);
+            bolim = BolimMApping.ToEntity(bolimDto);
             bolimRepository.save(bolim);
-        }catch (Exception e){
-            return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR,bolimDto);
+        } catch (Exception e) {
+            return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR, bolimDto);
         }
-        return new ResponseDto<>(true,AppResponseCode.OK,AppResponseMassage.OK,BolimMApping.ToDto(bolim));
+        return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, BolimMApping.ToDto(bolim));
     }
 
     public ResponseDto<BolimDto> updateBolim(BolimDto bolimDto) {
-        if(bolimRepository.existsById(bolimDto.getId())) {
+        if (bolimRepository.existsById(bolimDto.getId())) {
             List<ValidatorDto> errors = Validator.addBolim(bolimDto);
             Bolim bolim = null;
-            if(errors.size() >= 1){
-                return new ResponseDto<>(false,AppResponseCode.VALIDATION_ERROS,AppResponseMassage.VALIDATION_ERROR,bolimDto);
+            if (errors.size() >= 1) {
+                return new ResponseDto<>(false, AppResponseCode.VALIDATION_ERROS, AppResponseMassage.VALIDATION_ERROR, bolimDto);
             }
             try {
                 bolim = BolimMApping.ToEntity(bolimDto);
                 bolimRepository.save(bolim);
-            }catch (Exception e){
-                return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR,bolimDto);
+            } catch (Exception e) {
+                return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR, bolimDto);
             }
             return new ResponseDto<>(
-                    true,AppResponseCode.OK,AppResponseMassage.OK,BolimMApping.ToDto(bolim)
+                    true, AppResponseCode.OK, AppResponseMassage.OK, BolimMApping.ToDto(bolim)
             );
         }
-        return new ResponseDto<>(false,AppResponseCode.NOT_FOUND,AppResponseMassage.NOT_FOUND,bolimDto);
+        return new ResponseDto<>(false, AppResponseCode.NOT_FOUND, AppResponseMassage.NOT_FOUND, bolimDto);
     }
 }

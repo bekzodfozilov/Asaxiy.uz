@@ -65,7 +65,7 @@ public class CarService {
             return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, list);
         }
 
-        return new ResponseDto<>(false,AppResponseCode.NOT_FOUND,AppResponseMassage.NOT_FOUND,carDto);
+        return new ResponseDto<>(false, AppResponseCode.NOT_FOUND, AppResponseMassage.NOT_FOUND, carDto);
 
     }
 

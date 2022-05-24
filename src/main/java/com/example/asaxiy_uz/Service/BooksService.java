@@ -38,51 +38,51 @@ public class BooksService {
 
     public ResponseDto<?> getAllBooksOrParams(MultiValueMap<String, String> param) {
         Optional<?> books = custemBooksRepository.getAllBooksParams(param);
-        if(books.isPresent()){
+        if (books.isPresent()) {
             return new ResponseDto<>(
-                    true, AppResponseCode.OK, AppResponseMassage.OK,books.get()
+                    true, AppResponseCode.OK, AppResponseMassage.OK, books.get()
             );
         }
-        return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR);
+        return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR);
     }
 
     public ResponseDto<?> addBooks(BooksDto booksDto) {
         List<ValidatorDto> errors = Validator.addBooks(booksDto);
 
-        if(errors.size() > 1){
-            return new ResponseDto<>(false,AppResponseCode.VALIDATION_ERROS,AppResponseMassage.VALIDATION_ERROR,booksDto,errors);
+        if (errors.size() > 1) {
+            return new ResponseDto<>(false, AppResponseCode.VALIDATION_ERROS, AppResponseMassage.VALIDATION_ERROR, booksDto, errors);
         }
         Books books = BooksMapping.ToEntitiy(booksDto);
 
         Optional<Bolim> bolim = bolimRepository.findById(booksDto.getBolim_id());
 
-        if(bolim.isEmpty()){
-            return new ResponseDto<>(false,AppResponseCode.NOT_FOUND,AppResponseMassage.NOT_FOUND,booksDto);
+        if (bolim.isEmpty()) {
+            return new ResponseDto<>(false, AppResponseCode.NOT_FOUND, AppResponseMassage.NOT_FOUND, booksDto);
         }
         books.setBolim_id(bolim.get().getId());
 
         Optional<Author> author = authorRepositry.findById(booksDto.getAuthor_id());
 
-        if(author.isEmpty()){
-            return new ResponseDto<>(false,AppResponseCode.NOT_FOUND,AppResponseMassage.NOT_FOUND,booksDto);
+        if (author.isEmpty()) {
+            return new ResponseDto<>(false, AppResponseCode.NOT_FOUND, AppResponseMassage.NOT_FOUND, booksDto);
         }
         books.setAuthor_id(author.get().getId());
 
         try {
             books.setId(null);
             booksRepository.save(books);
-        }catch (Exception e){
-            return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR,booksDto);
+        } catch (Exception e) {
+            return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR, booksDto);
         }
 
         int id = books.getId();
-       List<EntitiyBooks> entitiyBooks = custemBooksRepository.getBooksId(id);
-        return new ResponseDto<>(true,AppResponseCode.OK,AppResponseMassage.OK,entitiyBooks);
+        List<EntitiyBooks> entitiyBooks = custemBooksRepository.getBooksId(id);
+        return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, entitiyBooks);
 
     }
 
     public ResponseDto<?> updateBooks(BooksDto booksDto) {
-        if(booksRepository.existsById(booksDto.getId())) {
+        if (booksRepository.existsById(booksDto.getId())) {
             List<ValidatorDto> errors = Validator.addBooks(booksDto);
             if (errors.size() >= 1) {
                 return new ResponseDto<>(false, AppResponseCode.VALIDATION_ERROS, AppResponseMassage.VALIDATION_ERROR, booksDto, errors);
@@ -113,6 +113,6 @@ public class BooksService {
             List<EntitiyBooks> entitiyBooks = custemBooksRepository.getBooksId(id);
             return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, entitiyBooks);
         }
-        return new ResponseDto<>(false,AppResponseCode.NOT_FOUND,AppResponseMassage.NOT_FOUND,booksDto);
+        return new ResponseDto<>(false, AppResponseCode.NOT_FOUND, AppResponseMassage.NOT_FOUND, booksDto);
     }
 }

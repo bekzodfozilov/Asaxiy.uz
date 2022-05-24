@@ -30,61 +30,61 @@ public class AuthorService {
     private final CustemAuthorRepository custemAuthorRepository;
 
     public ResponseDto<Page<AuthorDto>> getAuthor(Integer page, Integer size) {
-        PageRequest pageRequest = PageRequest.of(page,size);
+        PageRequest pageRequest = PageRequest.of(page, size);
         Page<Author> authors = authorRepositry.findAll(pageRequest);
         List<AuthorDto> authorDtos = authors
                 .stream()
                 .map(AuthorMapping::toDto)
                 .collect(Collectors.toList());
-        if(authorDtos.size() > 0){
-            Page pages = new PageImpl(authorDtos,authors.getPageable(),authors.getTotalElements());
+        if (authorDtos.size() > 0) {
+            Page pages = new PageImpl(authorDtos, authors.getPageable(), authors.getTotalElements());
 
-            return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK,pages);
+            return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, pages);
         }
-        return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR);
+        return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR);
     }
 
     public ResponseDto<?> getAllParams(MultiValueMap<String, String> params) {
         Optional<?> authors = custemAuthorRepository.getAuthorParams(params);
-        if(authors.isPresent()){
+        if (authors.isPresent()) {
             return new ResponseDto<>(
-                    true,AppResponseCode.OK,AppResponseMassage.OK,authors.get()
+                    true, AppResponseCode.OK, AppResponseMassage.OK, authors.get()
             );
         }
-        return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR);
+        return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR);
     }
 
     public ResponseDto<AuthorDto> addAuthor(AuthorDto authorDto) {
         List<ValidatorDto> errors = Validator.addAuthor(authorDto);
-        if(errors.size() >= 1){
-            return new ResponseDto<>(false,AppResponseCode.VALIDATION_ERROS,AppResponseMassage.VALIDATION_ERROR,authorDto,errors);
+        if (errors.size() >= 1) {
+            return new ResponseDto<>(false, AppResponseCode.VALIDATION_ERROS, AppResponseMassage.VALIDATION_ERROR, authorDto, errors);
         }
         Author author;
         try {
             author = AuthorMapping.toEntity(authorDto);
             author.setId(null);
             authorRepositry.save(author);
-        }catch (Exception e){
-            return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR,authorDto);
+        } catch (Exception e) {
+            return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR, authorDto);
         }
-        return new ResponseDto<>(true,AppResponseCode.OK,AppResponseMassage.OK,AuthorMapping.toDto(author));
+        return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, AuthorMapping.toDto(author));
     }
 
     public ResponseDto<AuthorDto> updateAuthor(AuthorDto authorDto) {
-        if (authorRepositry.existsById(authorDto.getId())){
+        if (authorRepositry.existsById(authorDto.getId())) {
             List<ValidatorDto> errors = Validator.addAuthor(authorDto);
-            if(errors.size() >= 1){
-                return new ResponseDto<>(false,AppResponseCode.VALIDATION_ERROS,AppResponseMassage.VALIDATION_ERROR,authorDto);
+            if (errors.size() >= 1) {
+                return new ResponseDto<>(false, AppResponseCode.VALIDATION_ERROS, AppResponseMassage.VALIDATION_ERROR, authorDto);
             }
             Author author;
             try {
                 author = AuthorMapping.toEntity(authorDto);
                 authorRepositry.save(author);
-            }catch (Exception e){
-                return new ResponseDto<>(false,AppResponseCode.DATABASE_ERROR,AppResponseMassage.DATABASE_ERROR,authorDto);
+            } catch (Exception e) {
+                return new ResponseDto<>(false, AppResponseCode.DATABASE_ERROR, AppResponseMassage.DATABASE_ERROR, authorDto);
             }
-            return new ResponseDto<>(true,AppResponseCode.OK,AppResponseMassage.OK,AuthorMapping.toDto(author));
+            return new ResponseDto<>(true, AppResponseCode.OK, AppResponseMassage.OK, AuthorMapping.toDto(author));
         }
-        return new ResponseDto<>(false,AppResponseCode.NOT_FOUND,AppResponseMassage.NOT_FOUND,authorDto);
+        return new ResponseDto<>(false, AppResponseCode.NOT_FOUND, AppResponseMassage.NOT_FOUND, authorDto);
     }
 }

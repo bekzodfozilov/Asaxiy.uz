@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
 @Data
 @Entity
 public class EntitiyPhones {
@@ -13,6 +14,9 @@ public class EntitiyPhones {
 
     @Column(name = "bolim")
     private String bolim;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "cost")
     private Integer cost;

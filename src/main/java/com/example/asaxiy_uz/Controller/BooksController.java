@@ -17,21 +17,21 @@ public class BooksController {
 
     /* Har bitta fildi boyicha get qiladi yeni malimotlarni tortib keladi aftori bilan*/
     @GetMapping("get-books-params")
-    private ResponseDto<?> getAllBooksOrParams(@RequestParam MultiValueMap<String,String> param){
+    private ResponseDto<?> getAllBooksOrParams(@RequestParam MultiValueMap<String, String> param) {
         return booksService.getAllBooksOrParams(param);
     }
+
     /* Har bir fildini tekshirb bazaga saqlaydi */
     @PostMapping("add-books")
-    private ResponseDto<?> addBooks(@RequestBody BooksDto booksDto){
+    private ResponseDto<?> addBooks(@RequestBody BooksDto booksDto) {
         return booksService.addBooks(booksDto);
     }
+
     /* Update yani bor kiroblarni yengilash uchun */
     @PutMapping("update-books")
-    private ResponseDto<?> updateBooks(@RequestBody BooksDto booksDto){
+    private ResponseDto<?> updateBooks(@RequestBody BooksDto booksDto) {
         return booksService.updateBooks(booksDto);
     }
-
-
 
 
 }

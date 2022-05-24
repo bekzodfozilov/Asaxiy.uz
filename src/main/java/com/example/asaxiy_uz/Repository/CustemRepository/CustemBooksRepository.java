@@ -29,33 +29,33 @@ public class CustemBooksRepository {
 
         StringBuilder stringBuilder = new StringBuilder(" where 1 = 1 ");
 
-        if(IntegerHelper.Isvalid(param.getFirst("size")) && IntegerHelper.Isvalid(param.getFirst("page"))){
+        if (IntegerHelper.Isvalid(param.getFirst("size")) && IntegerHelper.Isvalid(param.getFirst("page"))) {
             stringBuilder.append(" limit :size offset :page");
         }
-        
-        queryParams(stringBuilder,param);
+
+        queryParams(stringBuilder, param);
 
         String s = "select  books.id , bolim.name as bolim, books.name , books.cost , books.publisher_date, books.page_count, books.genre ," +
                 " a.fristname , a.lastname , a.birthdate from bolim join books on bolim.id = books.bolim_id join author a on a.id = books.author_id" + stringBuilder;
 
         Query query = entityManager.createNativeQuery(s, EntitiyBooks.class);
 
-        if(IntegerHelper.Isvalid(param.getFirst("size"))){
-            query.setParameter("size",IntegerHelper.isInt(param.getFirst("size")));
+        if (IntegerHelper.Isvalid(param.getFirst("size"))) {
+            query.setParameter("size", IntegerHelper.isInt(param.getFirst("size")));
         }
-        if(IntegerHelper.Isvalid(param.getFirst("page"))){
+        if (IntegerHelper.Isvalid(param.getFirst("page"))) {
             page = IntegerHelper.isInt(param.getFirst("page"));
             size = IntegerHelper.isInt(param.getFirst("size"));
-            query.setParameter("page",page * size);
+            query.setParameter("page", page * size);
         }
 
-        quveryValue(query,param);
+        quveryValue(query, param);
 
 
-        if(param.containsKey("size") && param.containsKey("page")){
-            if(IntegerHelper.Isvalid(param.getFirst("size")) && IntegerHelper.Isvalid(param.getFirst("page"))){
+        if (param.containsKey("size") && param.containsKey("page")) {
+            if (IntegerHelper.Isvalid(param.getFirst("size")) && IntegerHelper.Isvalid(param.getFirst("page"))) {
                 return Optional.of(
-                        new PageImpl<>(query.getResultList(), PageRequest.of(page,size),query.getResultList().size())
+                        new PageImpl<>(query.getResultList(), PageRequest.of(page, size), query.getResultList().size())
                 );
             }
         }
@@ -63,45 +63,45 @@ public class CustemBooksRepository {
     }
 
 
-
     private void queryParams(StringBuilder stringBuilder, MultiValueMap<String, String> param) {
-        if(IntegerHelper.Isvalid(param.getFirst("id"))){
+        if (IntegerHelper.Isvalid(param.getFirst("id"))) {
             stringBuilder.append(" and books.id= :id");
         }
-        if(StringHelper.isValid(param.getFirst("name"))){
+        if (StringHelper.isValid(param.getFirst("name"))) {
             stringBuilder.append(" and books.name =: name");
         }
-        if(IntegerHelper.Isvalid(param.getFirst("cost"))){
+        if (IntegerHelper.Isvalid(param.getFirst("cost"))) {
             stringBuilder.append(" and books.cost =:cost");
         }
-        if(StringHelper.isValid(param.getFirst("publisher_date"))){
+        if (StringHelper.isValid(param.getFirst("publisher_date"))) {
             stringBuilder.append(" and books.publisher_date =: publisher_date");
         }
-        if(IntegerHelper.Isvalid(param.getFirst("page_count"))){
+        if (IntegerHelper.Isvalid(param.getFirst("page_count"))) {
             stringBuilder.append(" and books.page_count = : page_count");
         }
-        if(StringHelper.isValid(param.getFirst("genre"))){
+        if (StringHelper.isValid(param.getFirst("genre"))) {
             stringBuilder.append(" and books.genre = :genre");
         }
     }
+
     private void quveryValue(Query query, MultiValueMap<String, String> param) {
-        if(IntegerHelper.Isvalid(param.getFirst("id"))){
-            query.setParameter("id",IntegerHelper.isInt(param.getFirst("id")));
+        if (IntegerHelper.Isvalid(param.getFirst("id"))) {
+            query.setParameter("id", IntegerHelper.isInt(param.getFirst("id")));
         }
-        if(StringHelper.isValid(param.getFirst("name"))){
-            query.setParameter("name",param.getFirst("name"));
+        if (StringHelper.isValid(param.getFirst("name"))) {
+            query.setParameter("name", param.getFirst("name"));
         }
-        if(IntegerHelper.Isvalid(param.getFirst("cost"))){
-            query.setParameter("cost",IntegerHelper.isInt(param.getFirst("cost")));
+        if (IntegerHelper.Isvalid(param.getFirst("cost"))) {
+            query.setParameter("cost", IntegerHelper.isInt(param.getFirst("cost")));
         }
-        if(StringHelper.isValid(param.getFirst("publisher_date"))){
-            query.setParameter("publisher_date",param.getFirst("publisher_date"));
+        if (StringHelper.isValid(param.getFirst("publisher_date"))) {
+            query.setParameter("publisher_date", param.getFirst("publisher_date"));
         }
-        if(IntegerHelper.Isvalid(param.getFirst("page_count"))){
-            query.setParameter("page_count",IntegerHelper.isInt(param.getFirst("page_count")));
+        if (IntegerHelper.Isvalid(param.getFirst("page_count"))) {
+            query.setParameter("page_count", IntegerHelper.isInt(param.getFirst("page_count")));
         }
-        if(StringHelper.isValid(param.getFirst("genre"))){
-            query.setParameter("genre",param.getFirst("genre"));
+        if (StringHelper.isValid(param.getFirst("genre"))) {
+            query.setParameter("genre", param.getFirst("genre"));
         }
     }
 

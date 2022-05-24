@@ -19,34 +19,34 @@ public class CustemBolimRepository {
 
     private final EntityManager entityManager;
 
-    public Optional<?> getAllColumn(Integer page, Integer size, String column){
-        if(column.equals("books")){
+    public Optional<?> getAllColumn(Integer page, Integer size, String column) {
+        if (column.equals("books")) {
             String s = "select  books.id , bolim.name as bolim, books.name , books.cost , books.publisher_date, books.page_count, books.genre ," +
                     " a.fristname , a.lastname , a.birthdate from bolim join books on bolim.id = books.bolim_id join author a on a.id = books.author_id";
 
 
             Query query = entityManager.createNativeQuery(s, EntitiyBooks.class);
 
-            return Optional.of(new PageImpl<>(query.getResultList(),PageRequest.of(page,size),query.getResultList().size()));
-        }else if(column.equals("car")){
+            return Optional.of(new PageImpl<>(query.getResultList(), PageRequest.of(page, size), query.getResultList().size()));
+        } else if (column.equals("car")) {
             String s = "select c.id,bolim.name as bolim, c.name, c.cost,c.model,c.date_of_sanitary_release from bolim join car c on bolim.id = c.bolim_id";
 
             Query query = entityManager.createNativeQuery(s, Car.class);
 
-            return Optional.of(new PageImpl<>(query.getResultList(),PageRequest.of(page,size),query.getResultList().size()));
-        }else if(column.equals("laptops")){
-              String s = "select l.id,bolim.name as bolim,l.name,l.cost,l.model,l.date_of_sanitary_release from bolim join laptops l on bolim.id = l.bolim_id";
+            return Optional.of(new PageImpl<>(query.getResultList(), PageRequest.of(page, size), query.getResultList().size()));
+        } else if (column.equals("laptops")) {
+            String s = "select l.id,bolim.name as bolim,l.name,l.cost,l.model,l.date_of_sanitary_release from bolim join laptops l on bolim.id = l.bolim_id";
 
-              Query query = entityManager.createNativeQuery(s, EntitiyLaptops.class);
+            Query query = entityManager.createNativeQuery(s, EntitiyLaptops.class);
 
-            return Optional.of(new PageImpl<>(query.getResultList(),PageRequest.of(page,size),query.getResultList().size()));
+            return Optional.of(new PageImpl<>(query.getResultList(), PageRequest.of(page, size), query.getResultList().size()));
 
-        }else if(column.equals("phones")){
-              String s = "select p.id, bolim.name as bolim , p.name, p.cost,p.model,p.date_of_sanitary_release from bolim join phones p on bolim.id = p.bolim_id";
+        } else if (column.equals("phones")) {
+            String s = "select p.id, bolim.name as bolim , p.name, p.cost,p.model,p.date_of_sanitary_release from bolim join phones p on bolim.id = p.bolim_id";
 
-              Query query = entityManager.createNativeQuery(s, EntitiyPhones.class);
+            Query query = entityManager.createNativeQuery(s, EntitiyPhones.class);
 
-            return Optional.of(new PageImpl<>(query.getResultList(),PageRequest.of(page,size),query.getResultList().size()));
+            return Optional.of(new PageImpl<>(query.getResultList(), PageRequest.of(page, size), query.getResultList().size()));
 
 
         }

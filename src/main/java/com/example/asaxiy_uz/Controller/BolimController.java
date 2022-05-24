@@ -30,13 +30,13 @@ public class BolimController {
 
     /*add bolim qoshish uchun*/
     @PostMapping("add-bolim")
-    private ResponseDto<BolimDto> addBolim(@RequestBody BolimDto bolimDto){
+    private ResponseDto<BolimDto> addBolim(@RequestBody BolimDto bolimDto) {
         return bolimService.addBolim(bolimDto);
     }
 
     /*update bolim yana bolimni yangilash*/
     @PutMapping("update-bolim")
-    private ResponseDto<BolimDto> updateBolim(@RequestBody BolimDto bolimDto){
+    private ResponseDto<BolimDto> updateBolim(@RequestBody BolimDto bolimDto) {
         return bolimService.updateBolim(bolimDto);
     }
 }

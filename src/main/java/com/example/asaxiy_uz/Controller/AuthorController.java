@@ -17,24 +17,25 @@ public class AuthorController {
 
     /* get author Barcha authorlari chop etish*/
     @GetMapping("get-author")
-    private ResponseDto<Page<AuthorDto>> getAuthor(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "20") Integer size){
-        return authorService.getAuthor(page,size);
+    private ResponseDto<Page<AuthorDto>> getAuthor(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "20") Integer size) {
+        return authorService.getAuthor(page, size);
     }
+
     /* har bir fildi boyich ishlash */
     @GetMapping("get-all-params")
-    private ResponseDto<?> getAllParams(@RequestParam MultiValueMap<String,String> params){
+    private ResponseDto<?> getAllParams(@RequestParam MultiValueMap<String, String> params) {
         return authorService.getAllParams(params);
     }
 
     /* add author barchi fildini tekshirb yangi author qoshish */
     @PutMapping("add-author")
-    private ResponseDto<AuthorDto> addAuthor(@RequestBody AuthorDto authorDto){
+    private ResponseDto<AuthorDto> addAuthor(@RequestBody AuthorDto authorDto) {
         return authorService.addAuthor(authorDto);
     }
 
     /* update yani author malumotlarini yangilash uchun*/
     @PutMapping("update-author")
-    private ResponseDto<AuthorDto> updateAuthor(@RequestBody AuthorDto authorDto){
+    private ResponseDto<AuthorDto> updateAuthor(@RequestBody AuthorDto authorDto) {
         return authorService.updateAuthor(authorDto);
     }
 }

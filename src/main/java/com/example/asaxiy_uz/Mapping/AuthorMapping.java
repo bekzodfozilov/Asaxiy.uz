@@ -5,7 +5,7 @@ import com.example.asaxiy_uz.Dto.AuthorDto;
 
 public class AuthorMapping {
 
-    public static AuthorDto toDto(Author author){
+    public static AuthorDto toDto(Author author) {
         return new AuthorDto(
                 author.getId(),
                 author.getFristname(),

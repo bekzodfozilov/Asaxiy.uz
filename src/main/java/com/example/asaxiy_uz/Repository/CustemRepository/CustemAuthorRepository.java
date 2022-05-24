@@ -31,65 +31,66 @@ public class CustemAuthorRepository {
 
         StringBuilder stringBuilder = new StringBuilder(" where 1 = 1");
 
-        if(IntegerHelper.Isvalid(params.getFirst("size")) && IntegerHelper.Isvalid(params.getFirst("page"))){
+        if (IntegerHelper.Isvalid(params.getFirst("size")) && IntegerHelper.Isvalid(params.getFirst("page"))) {
             stringBuilder.append(" limit :size offset :page");
         }
 
-        queryParams(stringBuilder,params);
+        queryParams(stringBuilder, params);
 
         String s = "Select * from author " + stringBuilder;
 
         Query query = entityManager.createNativeQuery(s, Author.class);
 
-        if(IntegerHelper.Isvalid(params.getFirst("size"))){
-            query.setParameter("size",IntegerHelper.isInt(params.getFirst("size")));
+        if (IntegerHelper.Isvalid(params.getFirst("size"))) {
+            query.setParameter("size", IntegerHelper.isInt(params.getFirst("size")));
         }
-        if(IntegerHelper.Isvalid(params.getFirst("page"))){
+        if (IntegerHelper.Isvalid(params.getFirst("page"))) {
             page = IntegerHelper.isInt(params.getFirst("page"));
             size = IntegerHelper.isInt(params.getFirst("size"));
-            query.setParameter("page",page * size);
+            query.setParameter("page", page * size);
         }
 
-        quveryValue(query,params);
+        quveryValue(query, params);
 
 
-        if(params.containsKey("size") && params.containsKey("page")){
-            if(IntegerHelper.Isvalid(params.getFirst("size")) && IntegerHelper.Isvalid(params.getFirst("page"))){
+        if (params.containsKey("size") && params.containsKey("page")) {
+            if (IntegerHelper.Isvalid(params.getFirst("size")) && IntegerHelper.Isvalid(params.getFirst("page"))) {
                 return Optional.of(
-                        new PageImpl<>(query.getResultList(), PageRequest.of(page,size),query.getResultList().size())
+                        new PageImpl<>(query.getResultList(), PageRequest.of(page, size), query.getResultList().size())
                 );
             }
         }
-        return  Optional.of(query.getResultList());
+        return Optional.of(query.getResultList());
     }
 
 
     private void queryParams(StringBuilder stringBuilder, MultiValueMap<String, String> params) {
-        if(IntegerHelper.Isvalid(params.getFirst("id"))){
+        if (IntegerHelper.Isvalid(params.getFirst("id"))) {
             stringBuilder.append(" and id = :id");
         }
-        if(StringHelper.isValid(params.getFirst("fristname"))){
+        if (StringHelper.isValid(params.getFirst("fristname"))) {
             stringBuilder.append(" and fristname = :fristname");
         }
-        if(StringHelper.isValid(params.getFirst("lastname"))){
+        if (StringHelper.isValid(params.getFirst("lastname"))) {
             stringBuilder.append(" and lastname = :lastname");
         }
-        if(StringHelper.isValid(params.getFirst("brithdate"))){
+        if (StringHelper.isValid(params.getFirst("brithdate"))) {
             stringBuilder.append(" and brithdate = :brithdate");
         }
     }
+
     private void quveryValue(Query query, MultiValueMap<String, String> params) {
-        if(IntegerHelper.Isvalid(params.getFirst("id"))){
-            query.setParameter("id",IntegerHelper.isInt(params.getFirst("id")));
+        if (IntegerHelper.Isvalid(params.getFirst("id"))) {
+            query.setParameter("id", IntegerHelper.isInt(params.getFirst("id")));
         }
-        if(StringHelper.isValid(params.getFirst("fristname"))){
-            query.setParameter("fristname",params.getFirst("fristname"));
+        if (StringHelper.isValid(params.getFirst("fristname"))) {
+            query.setParameter("fristname", params.getFirst("fristname"));
         }
-        if(StringHelper.isValid(params.getFirst("lastname"))){
-            query.setParameter("lastname",params.getFirst("lastname"));
+        if (StringHelper.isValid(params.getFirst("lastname"))) {
+            query.setParameter("lastname", params.getFirst("lastname"));
         }
-        if(StringHelper.isValid(params.getFirst("brithdate"))){
-            query.setParameter("brithdate",params.getFirst("brithdate"));
+        if (StringHelper.isValid(params.getFirst("brithdate"))) {
+            query.setParameter("brithdate", params.getFirst("brithdate"));
         }
     }
 

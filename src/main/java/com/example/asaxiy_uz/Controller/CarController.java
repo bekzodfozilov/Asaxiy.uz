@@ -17,19 +17,19 @@ public class CarController {
 
     /* get params har bitta fildi boyohc malumot olish bolim classiga join qilib*/
     @GetMapping("get-car-params")
-    private ResponseDto<?> getCar(@RequestParam MultiValueMap<String,String> params){
+    private ResponseDto<?> getCar(@RequestParam MultiValueMap<String, String> params) {
         return carService.getCar(params);
     }
 
     /*add car yangi mashina qoshish*/
     @PostMapping("add-car")
-    private ResponseDto<?> addCar(@RequestBody CarDto carDto){
-      return carService.addCar(carDto);
+    private ResponseDto<?> addCar(@RequestBody CarDto carDto) {
+        return carService.addCar(carDto);
     }
 
     /* update car car malumotlarini yangilash*/
     @PutMapping("update-car")
-    private ResponseDto<?> updateCar(@RequestBody CarDto carDto){
+    private ResponseDto<?> updateCar(@RequestBody CarDto carDto) {
         return carService.updateCar(carDto);
     }
 }
